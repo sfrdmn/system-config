@@ -1,0 +1,28 @@
+# depends: youtube-dl from http://rg3.github.com/youtube-dl/
+# Make it executable (chmod +x <path-to-youtube-dl>/youtube-dl)
+# Copy it to /usr/bin to use it like a command (sudo cp <path-to-youtube-dl>/youtube-dl /usr/bin)
+# Open your favourite editor and copy this script and save by any name you like (I use youtube-dl-mp3).
+# Make it executable (chmod +x <path-to-youtube-dl-mp3>/youtube-dl-mp3)
+# Copy it to /usr/bin to use it like a command (sudo cp <path-to-youtube-dl-mp3>/youtube-dl-mp3 /usr/bin)
+# Done! :)
+# Usage: youtube-dl-mp3 "http://www.youtube.com/watch?v=YnA6ExlxNJU&feature=fvst"
+
+if [ -w "." ]
+then
+  echo ""
+else
+  echo "You don't have write permissions in this directory."
+  exit
+fi
+
+title=`youtube-dl --get-title "$1"`
+start=`echo $title| awk '{ print $1 }' `
+
+youtube-dl -o "%(stitle)s.%(ext)s" "$1"
+
+file=`ls *$start*.*`
+file_name=`echo $file| cut -d '.' -f1`
+file_ext=`echo $file| cut -d '.' -f2`
+
+ffmpeg -i "$file" -ab 160k -ac 2 -ar 44100 -vn "$file_name.mp3"
+rm -f "$file"
