@@ -1,5 +1,6 @@
 # Aliases
 alias vi="vim"
+alias ls="ls -F"
 alias lsa="ls -a"
 alias lsl="ls -l"
 
@@ -17,7 +18,7 @@ function sedall {
 }
 
 # cool B)
-function spinner(){
+function spinner() {
   PROC=$1
   while [ -d /proc/$PROC ];do
     echo -n '/^H' ; sleep 0.05
