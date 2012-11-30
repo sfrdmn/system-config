@@ -1,0 +1,44 @@
+#!/bin/bash
+
+PROJECT_NAME=$1
+SECRET_KEY=`cat /dev/urandom | env LC_CTYPE=C tr -cd 'a-f0-9!@#$%^*_+' | head -c 32`
+SETTINGS_PY='https://raw.github.com/gist/3910155/settings.py'
+URL_PY='https://raw.github.com/gist/1125918/urls.py'
+EXAMPLE_HTML='https://gist.github.com/raw/1125918/example.html'
+
+PACKAGE_MANAGER_CMD="brew install"
+
+if [ x$PROJECT_NAME = "x" ] ; then
+	# No project name!
+	echo "Usage: $0 <project name>"
+	exit 1
+fi
+
+sudo $PACKAGE_MANAGER_CMD python2.6 python-setuptools python-imaging
+sudo easy_install pip
+sudo pip install django django-cms south
+
+django-admin.py startproject $PROJECT_NAME
+if [[ $? != 0 ]] ; then
+  exit $?
+fi
+
+cd $PROJECT_NAME
+
+rm settings.py
+rm urls.py
+
+wget $SETTINGS_PY
+sed -i .tmp "s/{PROJECT_NAME}/${PROJECT_NAME}/g" settings.py
+sed -i .tmp "s/{SECRET_KEY}/${SECRET_KEY}/g" settings.py
+rm settings.py.tmp
+wget $URL_PY
+
+mkdir db
+mkdir templates
+cd templates
+wget $EXAMPLE_HTML
+cd ..
+python manage.py syncdb --all
+python manage.py migrate --fake
+python manage.py runserver
