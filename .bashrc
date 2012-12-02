@@ -3,7 +3,8 @@ alias vi="vim"
 alias ls="ls -F"
 alias lsa="ls -a"
 alias lsl="ls -l"
-alias git_unreachable='git fsck --cache --unreachable $(git for-each-ref --format="%(objectname)"'
+alias git_dangling='git fsck --cache --unreachable $(git for-each-ref --format="%(objectname)"'
+alias lns="ln -sf"
 
 function findgrep {
   find . -exec grep "$@" {} \; 2>/dev/null
@@ -16,6 +17,7 @@ function sedall {
   do
     sed -E -i ".sed.tmp" "$sedcmd" $path
   done
+  mv "*.sed.tmp" /tmp
 }
 
 # cool B)

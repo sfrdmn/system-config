@@ -10,21 +10,44 @@ set ruler
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
 
-map 0 ^
-
 command Ni set noautoindent nosmartindent
 command Yi set autoindent smartindent
-" command Cc s #^#//
 
 au BufRead,BufNewFile *.mustache set filetype=html
 au BufRead,BufNewFile *.md set filetype=markdown
 au BufRead,BufNewFile [Mm]akefile set noexpandtab
 au BufRead,BufNewFile (*.coffee|*.cson) set noexpandtab
 au BufRead,BufNewFile *.json set filetype=javascript
-" au BufRead,BufNewFile *.py
 
-func! DeleteTrailingWS()
+function! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
   exe "normal `z"
 endfunc
+
+function! Comment()
+  let ext = tolower(expand('%:e'))
+  if ext == 'php' || ext == 'rb' || ext == 'sh' || ext == 'py'
+    silent s/^/\#/
+  elseif ext == 'js'
+    silent s:^:\/\/:g
+  elseif ext == 'vim'
+    silent s:^:\":g
+  endif
+endfunction
+
+function! Uncomment()
+  let ext = tolower(expand('%:e'))
+  if ext == 'php' || ext == 'rb' || ext == 'sh' || ext == 'py'
+    silent s/^\#//
+  elseif ext == 'js'
+    silent s:^\/\/::g
+  elseif ext == 'vim'
+    silent s:^\"::g
+  endif
+endfunction
+
+map 0 ^
+map <C-a> :call Comment()<CR>
+map <C-b> :call Uncomment()<CR>
+map <C-w> :call DeleteTrailingWS()<CR>
