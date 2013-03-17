@@ -18,6 +18,8 @@ au BufRead,BufNewFile *.md set filetype=markdown
 au BufRead,BufNewFile [Mm]akefile set noexpandtab
 au BufRead,BufNewFile (*.coffee|*.cson) set noexpandtab
 au BufRead,BufNewFile *.json set filetype=javascript
+au BufRead,BufNewFile *.php set ts=4
+au BufRead,BufNewFile *.php set shiftwidth=4
 
 function! DeleteTrailingWS()
   exe "normal mz"
