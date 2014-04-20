@@ -5,6 +5,9 @@ alias lsa="ls -a"
 alias lsl="ls -l"
 alias git_dangling='git fsck --cache --unreachable $(git for-each-ref --format="%(objectname)"'
 alias lns="ln -sf"
+alias gs="git status"
+alias gc="git commit"
+alias gl="git log"
 
 function findgrep {
   find . -exec grep "$@" {} \; 2>/dev/null
@@ -17,7 +20,7 @@ function sedall {
   do
     sed -E -i ".sed.tmp" "$sedcmd" $path
   done
-  mv "*.sed.tmp" /tmp
+  mv *.sed.tmp /tmp
 }
 
 # cool B)
