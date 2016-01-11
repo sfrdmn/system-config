@@ -1,4 +1,5 @@
-# Aliases
+# Usage: Source this in your local .bashrc
+
 alias vi="vim"
 alias ls="ls -F"
 alias lsa="ls -a"
@@ -8,6 +9,7 @@ alias lns="ln -sf"
 alias gs="git status"
 alias gc="git commit"
 alias gl="git log"
+alias swift-repl="xcrun swift -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk"
 
 function findgrep {
   find . -exec grep "$@" {} \; 2>/dev/null
@@ -34,6 +36,15 @@ function spinner() {
   done
 }
 
+function gitinit() {
+  git init
+  printf "# ✌\n" > README.md
+  printf "*.swp\nnode_modules/\n.DS_Store\n" > .gitignore
+  git add README.md .gitignore
+  git commit -m "Initial commit."
+}
+
 # BASH prompt
 export PS1='\[$(tput setaf 4)\][\[$(tput setaf 6)\]\w\[$(tput setaf 5)\]$(__git_ps1 "(%s)")\[$(tput setaf 4)\]]$ \[$(tput sgr0)\]'
 export GIT_PS1_SHOWDIRTYSTATE=true
+export REACT_EDITOR=vim
